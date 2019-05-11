@@ -81,7 +81,7 @@ Visit my [GH-Page hosted site](https://micaeladj.github.io/No-Going-Back/) micae
 ## Credits
 
 | | Micaela Jawor |
-|-|:------------:|:-------------:|:---------:|:--------------:|
+|-|:------------:|
 | **Design** |
 | Artwork |◈|
 | Core Mechanics |◈|
