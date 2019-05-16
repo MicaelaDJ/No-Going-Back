@@ -1,9 +1,9 @@
-var myGamePiece, myFloor1, myFloor2;
+var myGamePiece;
+var myFloor = [];
 
 function startGame() {
     myGamePiece = new component(100, 100, "img/Ember.png", 0, 700, "image");
-    myFloor1 = new component(100, 100, "img/Floor.png", 0, 900, "image");
-    myFloor2 = new component(100, 100, "img/Floor.png", 100, 900, "image");
+    myFloor = new component(100, 100, "img/Floor.png", 0, 900, "image");
     myGameArea.start();
 }
 
@@ -16,6 +16,14 @@ var myGameArea = {
         document.body.insertBefore(this.canvas, document.body.childNodes[0]);
         this.frameNo = 0;
         this.interval = setInterval(updateGameArea, 20);
+        window.addEventListener('keyup', function (e) {
+            e.preventDefault();
+            myGameArea.keys = (myGameArea.keys || []);
+            myGameArea.keys[e.keyCode] = (e.type == "keydown");
+        })
+        window.addEventListener('keyup', function (e) {
+            myGameArea.keys[e.keyCode] = (e.type == "keydown");
+        })
         },
     clear : function() {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -35,8 +43,9 @@ function component(width, height, color, x, y, type) {
     this.height = height;
     this.speedX = 0;
     this.speedY = 0;
-    this.gravity = 0.05;
-    this.gravitySpeed = 0;    
+    this.gravity = 0.5;
+    this.gravitySpeed = 0;
+    this.bounce = 1; 
     this.x = x;
     this.y = y;    
     this.update = function() {
@@ -55,22 +64,34 @@ function component(width, height, color, x, y, type) {
         this.gravitySpeed += this.gravity;
         this.x += this.speedX;
         this.y += this.speedY + this.gravitySpeed;
-        this.hitBottom();        
+        this.hitBlock();
+        this.hitBottom();
+           
     }
     this.hitBottom = function() {
         var rockbottom = myGameArea.canvas.height - this.height;
         if (this.y > rockbottom) {
             this.y = rockbottom;
+            this.gravitySpeed = -(this.gravitySpeed * this.bounce);
         }
+    }
+    this.hitBlock = function() {
+        var blockbottom = myGameArea.canvas.height - (myFloor.height + this.height);
+        if (this.y > blockbottom) {
+            this.y = blockbottom;
+            this.gravitySpeed = -(this.gravitySpeed * this.bounce);
+        } 
     }
 }
 
 function updateGameArea() {
     myGameArea.clear();
+    myGamePiece.speed = 0;
+    if (myGameArea.keys && myGameArea.keys[39]) {myGamePiece.speedX = 3;}
+    if (myGameArea.keys && myGameArea.keys[37]) {myGamePiece.speedX = -3;}
     myGamePiece.newPos();
     myGamePiece.update();
-    myFloor1.update();
-    myFloor2.update();
+    myFloor.update();
 }
 
 function moveup() {
@@ -82,11 +103,11 @@ function movedown() {
 }
 
 function moveleft() {
-    myGamePiece.speedX = -1; 
+    myGamePiece.speedX = -3; 
 }
 
 function moveright() {
-    myGamePiece.speedX = 1; 
+    myGamePiece.speedX = 3; 
 }
 
 function clearmove() {
