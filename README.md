@@ -26,7 +26,7 @@
 <img src="./img/levelLayout3.jpg">
 
 ## Characters
-##### CharactersS
+##### Characters
 <img src="./img/characters.jpg">
 
 ## Known Bugs
