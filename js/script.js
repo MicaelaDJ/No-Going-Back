@@ -1,5 +1,5 @@
 var myGamePiece;
-var myFloor;
+var myFloor = [];
 
 function startGame() {
     myGamePiece = new component(100, 100, "img/Ember.png", 0, 700, "image");
