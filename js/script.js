@@ -3,9 +3,9 @@ var myFloor, myFloor1, myFloor2, myFloor3, myFloor4, myFloor5, myFloor6, myFloor
 var myEnemy;
 
 function startGame() {
-    myGamePiece = new component(100, 100, "img/Ember.png", 0, 700, "image");
-    myEnemy = new component (100, 100, "img/IceCube.png", 600, 800, "image")
-    myFloor = new component(100, 100, "img/EndFloor.png", 0, 900, "image");
+    myGamePiece = new component(50, 50, "img/Ember.png", 0, 700, "image");
+    myEnemy = new component (100, 100, "img/Fan.gif", 600, 800, "image")
+    myFloor = new component(100, 100, "img/StartFloor.png", 0, 900, "image");
     myFloor1 = new component(100, 100, "img/Floor.png", 100, 900, "image");
     myFloor2 = new component(100, 100, "img/Floor.png", 200, 900, "image");
     myFloor3 = new component(100, 100, "img/Floor.png", 300, 900, "image");
@@ -86,6 +86,7 @@ function component(width, height, color, x, y, type) {
         this.hitBlock8();
         this.hitBlock9();
         this.hitBottom();
+        this.hitEnemy();
            
     }
     this.hitBottom = function() {
@@ -166,28 +167,42 @@ function component(width, height, color, x, y, type) {
             this.gravitySpeed = -(this.gravitySpeed * this.bounce);
         } 
     }
+    this.hitEnemy = function() {
+        var enemybottom = myGameArea.canvas.height - (myEnemy.height + this.height);
+        if (this.y > enemybottom && ((this.x-(this.width/2))<(myEnemy.x+(myEnemy.width/2))&&(this.x+(this.width/2)>myEnemy.x-(myEnemy.width/2)))) {
+            this.y = enemybottom;
+            // this.gravitySpeed = -(this.gravitySpeed * this.bounce);
+        } 
+    }
 }
 
 function updateGameArea() {
-    myGameArea.clear();
-    myGamePiece.speedX = 0;
-    if (myGameArea.keys && myGameArea.keys[39]) {myGamePiece.speedX = 6;}
-    if (myGameArea.keys && myGameArea.keys[68]) {myGamePiece.speedX = 6;}
-    if (myGameArea.keys && myGameArea.keys[37]) {myGamePiece.speedX = -6;}
-    if (myGameArea.keys && myGameArea.keys[65]) {myGamePiece.speedX = -6;}
-    myGamePiece.newPos();
-    myGamePiece.update();
-    myFloor.update();
-    myFloor1.update();
-    myFloor2.update();
-    myFloor3.update();
-    myFloor4.update();
-    myFloor5.update();
-    myFloor6.update();
-    myFloor7.update();
-    myFloor8.update();
-    myFloor9.update();
-    myEnemy.update();
+    if (myGamePiece.hitEnemy(myEnemy)) {
+        myGameArea.stop();
+    } else if (myGamePiece.hitBlock9(myFloor9)) {
+        // change block color if ember hits it
+    } else {
+    
+        myGameArea.clear();
+        myGamePiece.speedX = 0;
+        if (myGameArea.keys && myGameArea.keys[39]) {myGamePiece.speedX = 6;}
+        if (myGameArea.keys && myGameArea.keys[68]) {myGamePiece.speedX = 6;}
+        if (myGameArea.keys && myGameArea.keys[37]) {myGamePiece.speedX = -6;}
+        if (myGameArea.keys && myGameArea.keys[65]) {myGamePiece.speedX = -6;}
+        myGamePiece.newPos();
+        myGamePiece.update();
+        myFloor.update();
+        myFloor1.update();
+        myFloor2.update();
+        myFloor3.update();
+        myFloor4.update();
+        myFloor5.update();
+        myFloor6.update();
+        myFloor7.update();
+        myFloor8.update();
+        myFloor9.update();
+        myEnemy.update();
+    }
 }
 
 // function moveup() {
