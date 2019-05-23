@@ -1,20 +1,23 @@
 var myGamePiece;
 var myFloor, myFloor1, myFloor2, myFloor3, myFloor4, myFloor5, myFloor6, myFloor7, myFloor8, myFloor9;
 var myEnemy;
+var myBackground;
 
 function startGame() {
     myGamePiece = new component(50, 50, "img/Ember.png", 0, 700, "image");
-    myEnemy = new component (100, 100, "img/Fan.gif", 600, 800, "image")
+    myBackground = new component (1000, 1000, "img/Background.jpg", 0, 0, "image");
+    myEnemy = new component (100, 100, "img/DropletLeft.png", 600, 800, "image")
     myFloor = new component(100, 100, "img/StartFloor.png", 0, 900, "image");
     myFloor1 = new component(100, 100, "img/Floor.png", 100, 900, "image");
     myFloor2 = new component(100, 100, "img/Floor.png", 200, 900, "image");
-    myFloor3 = new component(100, 100, "img/Floor.png", 300, 900, "image");
+    // myFloor3 = new component(100, 100, "img/Floor.png", 300, 900, "image");
     myFloor4 = new component(100, 100, "img/Floor.png", 400, 900, "image");
     myFloor5 = new component(100, 100, "img/Floor.png", 500, 900, "image");
     myFloor6 = new component(100, 100, "img/Floor.png", 600, 900, "image");
     myFloor7 = new component(100, 100, "img/Floor.png", 700, 900, "image");
     myFloor8 = new component(100, 100, "img/Floor.png", 800, 900, "image");
     myFloor9 = new component(100, 100, "img/EndFloor.png", 900, 900, "image");
+    myBackground = new component (1000, 1000, "img/Background.jpg", 0, 0, "image");
     myGameArea.start();
 }
 
@@ -78,7 +81,7 @@ function component(width, height, color, x, y, type) {
         this.hitBlock();
         this.hitBlock1();
         this.hitBlock2();
-        this.hitBlock3();
+        // this.hitBlock3();
         this.hitBlock4();
         this.hitBlock5();
         this.hitBlock6();
@@ -93,7 +96,11 @@ function component(width, height, color, x, y, type) {
         var rockbottom = myGameArea.canvas.height - this.height;
         if (this.y > rockbottom) {
             this.y = rockbottom;
+            myGameArea.stop();
             // this.gravitySpeed = -(this.gravitySpeed);
+            ctx.font = "45px Cute Font";
+            ctx.fillStyle = "White";
+            ctx.fillText("Game Over Loser", 350, 500);
         }
     }
 
@@ -118,16 +125,16 @@ function component(width, height, color, x, y, type) {
             this.gravitySpeed = -(this.gravitySpeed * this.bounce);
         } 
     }
-    this.hitBlock3 = function() {
-        var blockbottom = myGameArea.canvas.height - (myFloor3.height + this.height);
-        if (this.y > blockbottom && ((this.x-(this.width/2))<(myFloor3.x+(myFloor3.width/2))&&(this.x+(this.width/2)>myFloor3.x-(myFloor3.width/2)))) {
-            this.y = blockbottom;
-            this.gravitySpeed = -(this.gravitySpeed * this.bounce);
-        } 
-    }
+    // this.hitBlock3 = function() {
+    //     var blockbottom = myGameArea.canvas.height - (myFloor3.height + this.height);
+    //     if (this.y > blockbottom && ((this.x-(this.width/2))<(myFloor3.x+(myFloor3.width/2))&&(this.x+(this.width/2)>myFloor3.x-(myFloor3.width/2)))) {
+    //         this.y = blockbottom;
+    //         this.gravitySpeed = -(this.gravitySpeed * this.bounce);
+    //     } 
+    // }
     this.hitBlock4 = function() {
         var blockbottom = myGameArea.canvas.height - (myFloor4.height + this.height);
-        if (this.y > blockbottom && ((this.x-(this.width/2))<(myFloor4.x+(myFloor4.width/2))&&(this.x+(this.width/2)>myFloor4.x-(myFloor4.width/2)))) {
+        if (this.y > blockbottom && ((this.x-(this.width/2))<(myFloor4.x+(myFloor4.width/2))&&(this.x+(this.width/4)>myFloor4.x-(myFloor4.width/4)))) {
             this.y = blockbottom;
             this.gravitySpeed = -(this.gravitySpeed * this.bounce);
         } 
@@ -165,25 +172,42 @@ function component(width, height, color, x, y, type) {
         if (this.y > blockbottom && ((this.x-(this.width/2))<(myFloor9.x+(myFloor9.width/2))&&(this.x+(this.width/2)>myFloor9.x-(myFloor9.width/2)))) {
             this.y = blockbottom;
             this.gravitySpeed = -(this.gravitySpeed * this.bounce);
+            myGameArea.stop();
+            ctx.font = "45px Cute Font";
+            ctx.fillStyle = "White";
+            ctx.fillText("You Win", 400, 500);
+            
         } 
     }
     this.hitEnemy = function() {
-        var enemybottom = myGameArea.canvas.height - (myEnemy.height + this.height);
-        if (this.y > enemybottom && ((this.x-(this.width/2))<(myEnemy.x+(myEnemy.width/2))&&(this.x+(this.width/2)>myEnemy.x-(myEnemy.width/2)))) {
+        var enemybottom = myGameArea.canvas.height - (myEnemy.height + myEnemy.height + this.height);
+        if (this.y > enemybottom && ((this.x-(this.width/2))<(myEnemy.x+(myEnemy.width/2))&&(this.x+(this.width/4)>myEnemy.x-(myEnemy.width/4)))) {
             this.y = enemybottom;
-            // this.gravitySpeed = -(this.gravitySpeed * this.bounce);
+            myGameArea.stop();
+            ctx.font = "45px Cute Font";
+            ctx.fillStyle = "White";
+            ctx.fillText("Game Over Loser", 350, 500);
         } 
     }
+
+    // myGamePiece.prototype.checkCollision = function (body) {
+    //     var leftCollision = (body.col === 0);
+    //     var topCollision = (body.row === 0);
+    //     var rightCollision = (body.col === myGamePiece.width - 1);
+    //     var bottomCollision = (body.row === myGamePiece.height - 1);
+    // }
 }
 
 function updateGameArea() {
     if (myGamePiece.hitEnemy(myEnemy)) {
         myGameArea.stop();
     } else if (myGamePiece.hitBlock9(myFloor9)) {
-        // change block color if ember hits it
+        myGameArea.stop();
     } else {
     
         myGameArea.clear();
+        myBackground.newPos();
+        myBackground.update();
         myGamePiece.speedX = 0;
         if (myGameArea.keys && myGameArea.keys[39]) {myGamePiece.speedX = 6;}
         if (myGameArea.keys && myGameArea.keys[68]) {myGamePiece.speedX = 6;}
@@ -194,7 +218,7 @@ function updateGameArea() {
         myFloor.update();
         myFloor1.update();
         myFloor2.update();
-        myFloor3.update();
+        // myFloor3.update();
         myFloor4.update();
         myFloor5.update();
         myFloor6.update();
