@@ -6,7 +6,7 @@ var myBackground;
 function startGame() {
     myGamePiece = new component(50, 50, "img/Ember.png", 0, 700, "image");
     myBackground = new component (1000, 1000, "img/Background.jpg", 0, 0, "image");
-    myEnemy = new component (100, 100, "img/DropletLeft.png", 600, 800, "image")
+    myEnemy = new component (100, 100, "img/Fan.gif", 600, 800, "image")
     myFloor = new component(100, 100, "img/StartFloor.png", 0, 900, "image");
     myFloor1 = new component(100, 100, "img/Floor.png", 100, 900, "image");
     myFloor2 = new component(100, 100, "img/Floor.png", 200, 900, "image");
